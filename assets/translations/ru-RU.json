@@ -1,0 +1,80 @@
+{
+  "commonErrors": {
+    "noInternet": "Отсутствует подключение к серверу.",
+    "userWithThisEmailAlreadyExists": "Пользователь с такой почтой уже существует.",
+    "serverUnavailable": "Сервер недоступен",
+    "unknown": "Неизвестная ошибка",
+    "clientError": "Ошибка на клиенте",
+    "unAuthorized": "Не достаточно прав доступа",
+    "notFound": "Ресурс не найден",
+    "resourceAlreadyExists": "Ресурс уже существует и не может быть заменен",
+    "invalidInput": "Неверный ввод",
+    "fieldCantBeEmpty": "Поле не может быть пустым",
+    "valueMustBeGreaterThanZero": "Значение должно быть больше нуля"
+  },
+  "commonTitles": {
+    "acceptAction": "Подтвердить действие",
+    "changeDate": "Сменить дату",
+    "changeTime": "Сменить время"
+  },
+  "auth": {
+    "signIn": "Вход",
+    "signInAction": "Войти",
+    "signUp": "Регистрация",
+    "signUpAction": "Зарегистрироваться",
+    "passwordLengthCondition": "Длина пароля: от 8 до 16 символов",
+    "passwordContentCondition": "Пароль может содержать латинские буквы и цифры",
+    "invalidEmailWarning": "Введите корректный адрес",
+    "userNotFound": "Пользователя с введенными данными не существует",
+    "userWithThisEmailAlreadyExists": "Пользователь с такой почтой уже существует",
+    "userSuccessfullyCreated": "Пользователь успешно создан",
+    "email": "Адрес электронной почты",
+    "password": "Пароль",
+    "logout": "Выход"
+  },
+  "broadcast": {
+    "broadcastList": "Список транcляций",
+    "createBroadcast": "Создать трансляцию",
+    "editBroadcast": "Изменить трансляцию",
+    "title": "Название",
+    "description": "Описание",
+    "allowedDateTimeRange": "Разрешенный диапазон дат:"
+  },
+  "menu": {
+    "menu": "Меню",
+    "editMenu": "Изменить единицу меню",
+    "createMenu": "Создать единицу меню",
+    "title": "Название",
+    "description": "Описание",
+    "price": "Цена (последние 2 цифры - копейки)",
+    "rubles": "Рубли",
+    "kopeck": "Копейки"
+  },
+  "order": {
+    "orders": "Заказы",
+    "orderItems": "Подзаказы",
+    "createOrder": "Создать заказ",
+    "addOrderItem": "Добавить подзаказ",
+    "chooseTableNumber": "Выбрать номер стола",
+    "chooseWaiterId": "Выбрать номер официанта",
+    "tableNumberCantBeEmpty": "Номер стола не может быть пустым",
+    "waiterIdCantBeEmpty": "Номер официанта не может быть пустым",
+    "itemsMustBeAddedToOrder": "Блюда должны быть добавлены в заказ",
+    "tableNumber": "Номер стола",
+    "orderSum": "Сумма заказа",
+    "orderStatus": "Статус",
+    "notDefined": "Не определен",
+    "orderCreatedAt": "Заказ создан",
+    "orderStatuses": {
+      "taken": "Принят",
+      "inCooking": "Готовится",
+      "pendingPayment": "Ждет оплаты",
+      "complete": "Оплачен"
+    }
+  },
+  "roles": {
+    "cook": "Повар",
+    "waiter": "Официант",
+    "manager": "Менеджер"
+  }
+}
