@@ -76,5 +76,12 @@
     "cook": "Повар",
     "waiter": "Официант",
     "manager": "Менеджер"
+  },
+  "weights": {
+    "weights": "Веса",
+    "editWeight": "Изменить весa",
+    "menuQuantityInOrders": "Количество блюд в заказах",
+    "orderWithThisMenuQuantity": "Количество заказов с таким блюдом",
+    "menuPricePercentInOrders": "Процент, который цена этих блюд в заказе составляет от цены заказов"
   }
 }

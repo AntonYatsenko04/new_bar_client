@@ -36,6 +36,10 @@ class AppRouter extends RootStackRouter {
               path: 'list_order_item',
               page: ListOrderItemRoute.page,
             ),
+            AutoRoute(
+              path: 'weights',
+              page: WeightsRoute.page,
+            ),
           ],
         ),
         AutoRoute(

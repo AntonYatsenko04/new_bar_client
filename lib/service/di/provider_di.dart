@@ -6,6 +6,7 @@ import 'package:bar_client/service/providers/order_provider.dart';
 import 'package:bar_client/service/providers/shared_preferences_provider.dart';
 import 'package:bar_client/service/providers/table_provider.dart';
 import 'package:bar_client/service/providers/user_provider.dart';
+import 'package:bar_client/service/providers/weights_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 
@@ -46,6 +47,11 @@ void initProviderDi(GetIt appLocator) {
     )
     ..registerLazySingleton<TableProvider>(
       () => TableProvider(
+        appLocator<Dio>(),
+      ),
+    )
+    ..registerLazySingleton<WeightsProvider>(
+      () => WeightsProvider(
         appLocator<Dio>(),
       ),
     );

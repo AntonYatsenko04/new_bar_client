@@ -38,6 +38,7 @@ class _ListMenuFormState extends State<ListMenuForm> {
           leading: RoleWidget(
             allowedRoles: const <UserType>[
               UserType.manager,
+              UserType.cook,
             ],
             child: IconButton(
               onPressed: () async {

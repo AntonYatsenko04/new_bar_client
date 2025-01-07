@@ -10,10 +10,10 @@ class MenuService {
   final MenuProvider _menuProvider;
   final SharedPreferencesProvider _sharedPreferencesProvider;
 
-  MenuService(
-      {required MenuProvider menuProvider,
-      required SharedPreferencesProvider sharedPreferencesProvider})
-      : _menuProvider = menuProvider,
+  MenuService({
+    required MenuProvider menuProvider,
+    required SharedPreferencesProvider sharedPreferencesProvider,
+  })  : _menuProvider = menuProvider,
         _sharedPreferencesProvider = sharedPreferencesProvider;
 
   Future<List<MenuItemResponse>> getAllMenuItems() async {

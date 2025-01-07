@@ -48,7 +48,6 @@ class ListMenuCubit extends Cubit<ListMenuState> {
       emit(DataState(menuItems: menuItems));
     } on AppException catch (e, st) {
       AppLogger().error(error: e, stackTrace: st);
-      emit(ErrorState(errorMessage: e.errorMessageKey));
     }
   }
 }

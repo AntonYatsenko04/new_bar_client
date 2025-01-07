@@ -16,4 +16,5 @@ class ApiConstants {
   static const String table = '/table';
   static const String waiterEntities = '/waiter_entities';
   static const String cookEntities = '/cook_entities';
+  static const String weights = '/criteria_weightss';
 }

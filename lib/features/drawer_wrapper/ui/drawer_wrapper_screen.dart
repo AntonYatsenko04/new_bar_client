@@ -63,6 +63,7 @@ class _DrawerWrapperScreenState extends State<DrawerWrapperScreen> {
           const ListMenuRoute(),
           const ListOrderItemRoute(),
           if (userType == UserType.waiter || userType == UserType.manager) const ListOrderRoute(),
+          if (userType == UserType.manager) const WeightsRoute(),
         ],
         bottomNavigationBuilder: (_, TabsRouter tabsRouter) {
           return BottomNavigationBar(
@@ -89,6 +90,11 @@ class _DrawerWrapperScreenState extends State<DrawerWrapperScreen> {
                 BottomNavigationBarItem(
                   label: LocaleKeys.order_orders.tr(),
                   icon: const Icon(Icons.fact_check),
+                ),
+              if (userType == UserType.manager)
+                BottomNavigationBarItem(
+                  label: LocaleKeys.weights_weights.tr(),
+                  icon: const Icon(Icons.sort_outlined),
                 ),
             ],
           );

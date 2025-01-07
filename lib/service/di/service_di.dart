@@ -4,6 +4,7 @@ import 'package:bar_client/service/services/menu_service.dart';
 import 'package:bar_client/service/services/order_service.dart';
 import 'package:bar_client/service/services/table_service.dart';
 import 'package:bar_client/service/services/user_service.dart';
+import 'package:bar_client/service/services/weights_service.dart';
 import 'package:get_it/get_it.dart';
 
 void initServiceDi(GetIt appLocator) {
@@ -42,6 +43,11 @@ void initServiceDi(GetIt appLocator) {
     ..registerLazySingleton<TableService>(
       () => TableService(
         tableProvider: appLocator(),
+      ),
+    )
+    ..registerLazySingleton<WeightsService>(
+      () => WeightsService(
+        weightsProvider: appLocator(),
       ),
     );
 }
