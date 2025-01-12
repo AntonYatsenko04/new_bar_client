@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:bar_client/core_ui/src/theme/app_text_styles.dart';
 import 'package:bar_client/core_ui/src/utils/date_formatter.dart';
 import 'package:bar_client/core_ui/src/widgets/height_spacer.dart';
@@ -10,6 +12,7 @@ class BroadcastCard extends StatelessWidget {
   final String description;
   final VoidCallback deleteCallback;
   final VoidCallback editCallback;
+  final Uint8List? image;
 
   const BroadcastCard({
     required this.name,
@@ -17,6 +20,7 @@ class BroadcastCard extends StatelessWidget {
     required this.description,
     required this.deleteCallback,
     required this.editCallback,
+    this.image,
     super.key,
   });
 
@@ -36,6 +40,12 @@ class BroadcastCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(name, style: AppTextStyles.s18W500H24Regular),
+                      const HeightSpacer(),
+                      if (image case final Uint8List image)
+                        SizedBox(
+                          width: 200,
+                          child: Image.memory(image),
+                        ),
                       const HeightSpacer(),
                       Text(
                         DateFormatter.getDateTimeString(dateTime),

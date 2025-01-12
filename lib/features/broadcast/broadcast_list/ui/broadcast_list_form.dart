@@ -1,6 +1,8 @@
 import 'package:bar_client/core/src/localization/generated/locale_keys.g.dart';
 import 'package:bar_client/core_ui/src/widgets/app_scaffold.dart';
 import 'package:bar_client/core_ui/src/widgets/text_fields/app_text_field.dart';
+import 'package:bar_client/core_ui/src/widgets/width_spacer.dart';
+import 'package:bar_client/features/broadcast/add_image/ui/add_image_screen.dart';
 import 'package:bar_client/features/broadcast/broadcast_list/ui/broadcast_card.dart';
 import 'package:bar_client/features/broadcast/change_broadcast/ui/change_broadcast_screen.dart';
 import 'package:bar_client/service/models/broadcast/broadcast_model_response.dart';
@@ -8,7 +10,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/src/constants/num_constants.dart';
 import '../../../../core_ui/src/widgets/error_view.dart';
 import '../cubit/broadcast_list_cubit.dart';
 
@@ -34,7 +35,37 @@ class _BroadcastListFormState extends State<BroadcastListForm> {
 
     return AppScaffold(
       title: LocaleKeys.broadcast_broadcastList.tr(),
+      leading: Row(
+        children: [
+          const SizedBox(
+            width: 10,
+          ),
+          IconButton(
+            onPressed: () async {
+              await showDialog(
+                context: context,
+                builder: (_) => const AddImageScreen(),
+              );
+              await cubit.getBroadcasts();
+            },
+            icon: const Icon(Icons.image),
+          ),
+        ],
+      ),
       actions: <Widget>[
+        IconButton(
+          onPressed: () async {
+            await showDialog(
+              context: context,
+              builder: (_) {
+                return const ChangeBroadcastScreen();
+              },
+            );
+            await cubit.getBroadcasts();
+          },
+          icon: const Icon(Icons.add),
+        ),
+        const WidthSpacer(),
         SizedBox(
           width: 350,
           child: AppTextField(
@@ -56,32 +87,18 @@ class _BroadcastListFormState extends State<BroadcastListForm> {
           switch (state) {
             case DataState():
               return GridView.builder(
-                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: NumConstants.maxCrossAxisExtent,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
                 ),
-                itemCount: state.filteredBroadcasts.length + 1,
+                itemCount: state.filteredBroadcasts.length,
                 itemBuilder: (BuildContext context, int index) {
-                  if (index == state.filteredBroadcasts.length) {
-                    return FilledButton(
-                      onPressed: () async {
-                        await showDialog(
-                          context: context,
-                          builder: (_) {
-                            return const ChangeBroadcastScreen();
-                          },
-                        );
-                        await cubit.getBroadcasts();
-                      },
-                      child: Text(LocaleKeys.broadcast_createBroadcast.tr()),
-                    );
-                  }
-                  final BroadcastModelResponse broadcast =
-                      state.filteredBroadcasts[index];
+                  final BroadcastModelResponse broadcast = state.filteredBroadcasts[index];
 
                   return BroadcastCard(
                     name: broadcast.name,
                     dateTime: broadcast.dateTime,
                     description: broadcast.description,
+                    image: state.getBroadcastImage(broadcast.id),
                     deleteCallback: () => cubit.deleteBroadcast(broadcast.id),
                     editCallback: () async {
                       await showDialog(

@@ -3,9 +3,15 @@ part of 'broadcast_list_cubit.dart';
 @immutable
 sealed class BroadcastListState {}
 
-final class DataState implements BroadcastListState {
-  final List<BroadcastModelResponse> broadcasts;
-  final String? searchString;
+@freezed
+class DataState with _$DataState implements BroadcastListState {
+  const DataState._();
+
+  const factory DataState({
+    required List<BroadcastModelResponse> broadcasts,
+    required List<BroadcastImageUiModel> broadcastImages,
+    String? searchString,
+  }) = _DataState;
 
   List<BroadcastModelResponse> get filteredBroadcasts {
     if (searchString == null) {
@@ -21,24 +27,14 @@ final class DataState implements BroadcastListState {
         .toList();
   }
 
-  DataState({
-    required this.broadcasts,
-    this.searchString,
-  });
+  Uint8List? getBroadcastImage(int id) {
+    for (final BroadcastImageUiModel broadcastImage in broadcastImages) {
+      if (broadcastImage.broadcastId == id) {
+        return broadcastImage.image;
+      }
+    }
 
-  DataState copyWith({
-    required String? searchString,
-    List<BroadcastModelResponse>? broadcasts,
-  }) {
-    return DataState(
-      broadcasts: broadcasts ?? this.broadcasts,
-      searchString: searchString,
-    );
-  }
-
-  @override
-  String toString() {
-    return 'DataState{broadcasts: $broadcasts, searchString: $searchString}';
+    return null;
   }
 }
 

@@ -38,7 +38,11 @@
     "editBroadcast": "Изменить трансляцию",
     "title": "Название",
     "description": "Описание",
-    "allowedDateTimeRange": "Разрешенный диапазон дат:"
+    "allowedDateTimeRange": "Разрешенный диапазон дат:",
+    "addPhoto": "Добавить фото",
+    "attachPhotoToBroadcast": "Прикрепить фото к трансляции",
+    "saveToSeparateFile": "Сохранить в отдельном файле",
+    "pleasePickAValidImage": "Пожалуйста, выберите изображение. Если оно было выбрано, убедитесь, что формат изображения - jpg/jpeg и файл не поврежден"
   },
   "menu": {
     "menu": "Меню",

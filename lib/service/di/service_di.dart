@@ -1,5 +1,7 @@
 import 'package:bar_client/service/services/auth_service.dart';
+import 'package:bar_client/service/services/broadcast_image_service.dart';
 import 'package:bar_client/service/services/broadcast_service.dart';
+import 'package:bar_client/service/services/file_picker_service.dart';
 import 'package:bar_client/service/services/menu_service.dart';
 import 'package:bar_client/service/services/order_service.dart';
 import 'package:bar_client/service/services/table_service.dart';
@@ -19,6 +21,15 @@ void initServiceDi(GetIt appLocator) {
       () => BroadcastService(
         broadcastProvider: appLocator(),
       ),
+    )
+    ..registerLazySingleton<BroadcastImageService>(
+      () => BroadcastImageService(
+        broadcastImageProvider: appLocator(),
+        filePickerService: appLocator(),
+      ),
+    )
+    ..registerLazySingleton<FilePickerService>(
+      FilePickerService.new,
     )
     ..registerLazySingleton<MenuService>(
       () => MenuService(

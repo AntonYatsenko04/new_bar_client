@@ -2,10 +2,9 @@ import 'package:logger/logger.dart';
 
 class AppLogger {
   final Logger _log = Logger(
-    // Use the default LogFilter (-> only log in debug mode)
     printer: PrettyPrinter(
-      colors: false, // Colorful log messages
-    ), // Use the PrettyPrinter to format and print log
+      colors: false,
+    ),
   );
 
   static final AppLogger _singleton = AppLogger._internal();

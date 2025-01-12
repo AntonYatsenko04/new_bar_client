@@ -15,9 +15,10 @@ class BroadcastListScreen extends StatelessWidget {
     return BlocProvider<BroadcastListCubit>(
       create: (_) => BroadcastListCubit(
         broadcastService: appLocator(),
+        broadcastImageService: appLocator(),
         appRouter: appLocator(),
         authService: appLocator(),
-      ),
+      )..getBroadcasts(),
       child: const BroadcastListForm(),
     );
   }

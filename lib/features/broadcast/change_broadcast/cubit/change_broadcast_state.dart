@@ -12,6 +12,7 @@ class ChangeBroadcastState {
     this.descriptionError,
     this.commonError,
   });
+
   String get dateTimeString => DateFormatter.getDateTimeString(dateTime);
 
   ChangeBroadcastState copyWith({

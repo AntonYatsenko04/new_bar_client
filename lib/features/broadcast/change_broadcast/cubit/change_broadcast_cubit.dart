@@ -4,6 +4,7 @@ import 'package:bar_client/service/exceptions/app_exception.dart';
 import 'package:bar_client/service/models/broadcast/broadcast_model_request.dart';
 import 'package:bar_client/service/models/broadcast/broadcast_model_response.dart';
 import 'package:bar_client/service/services/broadcast_service.dart';
+import 'package:bar_client/service/services/file_picker_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 
@@ -12,16 +13,22 @@ part 'change_broadcast_state.dart';
 class ChangeBroadcastCubit extends Cubit<ChangeBroadcastState> {
   final BroadcastModelResponse? broadcast;
   final BroadcastService _broadcastService;
+  final FilePickerService _filePickerService;
   final AppRouter _appRouter;
 
   ChangeBroadcastCubit({
-    required AppRouter appRouter,
     required BroadcastService broadcastService,
+    required FilePickerService filePickerService,
+    required AppRouter appRouter,
     this.broadcast,
-  })  : _appRouter = appRouter,
-        _broadcastService = broadcastService,
-        super(ChangeBroadcastState(
-            dateTime: broadcast?.dateTime ?? DateTime.now(),),);
+  })  : _broadcastService = broadcastService,
+        _filePickerService = filePickerService,
+        _appRouter = appRouter,
+        super(
+          ChangeBroadcastState(
+            dateTime: broadcast?.dateTime ?? DateTime.now(),
+          ),
+        );
 
   Future<void> acceptChanges({
     required String name,

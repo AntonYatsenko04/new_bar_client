@@ -10,6 +10,8 @@ import 'package:bar_client/service/providers/weights_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 
+import '../providers/broadcast_image_provider.dart';
+
 void initProviderDi(GetIt appLocator) {
   appLocator
     ..registerLazySingleton<SharedPreferencesProvider>(
@@ -24,6 +26,11 @@ void initProviderDi(GetIt appLocator) {
     )
     ..registerLazySingleton<BroadcastProvider>(
       () => BroadcastProvider(
+        appLocator<Dio>(),
+      ),
+    )
+    ..registerLazySingleton<BroadcastImageProvider>(
+      () => BroadcastImageProvider(
         appLocator<Dio>(),
       ),
     )

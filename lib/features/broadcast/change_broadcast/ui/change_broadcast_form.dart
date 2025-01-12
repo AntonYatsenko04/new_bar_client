@@ -49,81 +49,87 @@ class _ChangeBroadcastFormState extends State<ChangeBroadcastForm> {
         key: _formKey,
         child: BlocBuilder<ChangeBroadcastCubit, ChangeBroadcastState>(
           builder: (BuildContext context, ChangeBroadcastState state) {
-            return Column(
-              children: <Widget>[
-                Builder(
-                  builder: (_) {
-                    final String? text = state.commonError;
-                    if (text != null) {
-                      return ErrorView(
-                        message: text.tr(),
-                      );
-                    }
-                    return const SizedBox();
-                  },
-                ),
-                AppTextFieldWithLabel(
-                  label: LocaleKeys.broadcast_title.tr(),
-                  validator: const EmptyFieldValidator().check,
-                  controller: nameController,
-                ),
-                const HeightSpacer(),
-                Text(state.dateTimeString),
-                const HeightSpacer(),
-                Text(LocaleKeys.broadcast_allowedDateTimeRange.tr()),
-                Text(
-                  '${DateFormatter.getDateString(DateTime.now())} - ${DateFormatter.getDateString(DateTime(2100))}',
-                ),
-                const HeightSpacer(),
-                ElevatedButton(
-                  onPressed: () async {
-                    final DateTime? dateTime = await showDatePicker(
-                      context: context,
-                      firstDate: DateTime.now(),
-                      lastDate: DateTime(2100),
-                    );
-                    cubit.setDateTime(date: dateTime);
-                  },
-                  child: Text(LocaleKeys.commonTitles_changeDate.tr()),
-                ),
-                const HeightSpacer(),
-                ElevatedButton(
-                  onPressed: () async {
-                    final DateTime initialDateTime = widget.broadcast?.dateTime ?? DateTime.now();
-                    final TimeOfDay? time = await showTimePicker(
-                      context: context,
-                      initialTime: TimeOfDay.fromDateTime(initialDateTime),
-                    );
+            return CustomScrollView(slivers: [
+              SliverFillRemaining(
+                hasScrollBody: false,
+                child: Column(
+                  children: <Widget>[
+                    Builder(
+                      builder: (_) {
+                        final String? text = state.commonError;
+                        if (text != null) {
+                          return ErrorView(
+                            message: text.tr(),
+                          );
+                        }
+                        return const SizedBox();
+                      },
+                    ),
+                    AppTextFieldWithLabel(
+                      label: LocaleKeys.broadcast_title.tr(),
+                      validator: const EmptyFieldValidator().check,
+                      controller: nameController,
+                    ),
+                    const HeightSpacer(),
+                    Text(state.dateTimeString),
+                    const HeightSpacer(),
+                    Text(LocaleKeys.broadcast_allowedDateTimeRange.tr()),
+                    Text(
+                      '${DateFormatter.getDateString(DateTime.now())} - ${DateFormatter.getDateString(DateTime(2100))}',
+                    ),
+                    const HeightSpacer(),
+                    ElevatedButton(
+                      onPressed: () async {
+                        final DateTime? dateTime = await showDatePicker(
+                          context: context,
+                          firstDate: DateTime.now(),
+                          lastDate: DateTime(2100),
+                        );
+                        cubit.setDateTime(date: dateTime);
+                      },
+                      child: Text(LocaleKeys.commonTitles_changeDate.tr()),
+                    ),
+                    const HeightSpacer(),
+                    ElevatedButton(
+                      onPressed: () async {
+                        final DateTime initialDateTime =
+                            widget.broadcast?.dateTime ?? DateTime.now();
+                        final TimeOfDay? time = await showTimePicker(
+                          context: context,
+                          initialTime: TimeOfDay.fromDateTime(initialDateTime),
+                        );
 
-                    cubit.setDateTime(time: time);
-                  },
-                  child: Text(LocaleKeys.commonTitles_changeTime.tr()),
+                        cubit.setDateTime(time: time);
+                      },
+                      child: Text(LocaleKeys.commonTitles_changeTime.tr()),
+                    ),
+                    const HeightSpacer(),
+                    AppTextFieldWithLabel(
+                      label: LocaleKeys.broadcast_description.tr(),
+                      validator: const EmptyFieldValidator().check,
+                      controller: descriptionController,
+                    ),
+                    const HeightSpacer(),
+                    ElevatedButton(
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          cubit.acceptChanges(
+                            name: nameController.text.trim(),
+                            description: descriptionController.text.trim(),
+                          );
+                        }
+                      },
+                      child: Text(
+                        (cubit.broadcast == null
+                                ? LocaleKeys.broadcast_createBroadcast
+                                : LocaleKeys.broadcast_editBroadcast)
+                            .tr(),
+                      ),
+                    ),
+                  ],
                 ),
-                const HeightSpacer(),
-                AppTextFieldWithLabel(
-                  label: LocaleKeys.broadcast_description.tr(),
-                  validator: const EmptyFieldValidator().check,
-                  controller: descriptionController,
-                ),
-                const HeightSpacer(),
-                ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      cubit.acceptChanges(
-                        name: nameController.text.trim(),
-                        description: descriptionController.text.trim(),
-                      );
-                    }
-                  },
-                  child: Text(
-                    (cubit.broadcast == null
-                            ? LocaleKeys.broadcast_createBroadcast
-                            : LocaleKeys.broadcast_editBroadcast)
-                        .tr(),
-                  ),
-                ),
-              ],
-            );
+              ),
+            ]);
           },
         ),
       ),
