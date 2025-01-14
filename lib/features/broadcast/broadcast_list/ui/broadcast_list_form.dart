@@ -1,6 +1,5 @@
 import 'package:bar_client/core/src/localization/generated/locale_keys.g.dart';
 import 'package:bar_client/core_ui/src/widgets/app_scaffold.dart';
-import 'package:bar_client/core_ui/src/widgets/text_fields/app_text_field.dart';
 import 'package:bar_client/core_ui/src/widgets/width_spacer.dart';
 import 'package:bar_client/features/broadcast/add_image/ui/add_image_screen.dart';
 import 'package:bar_client/features/broadcast/broadcast_list/ui/broadcast_card.dart';
@@ -21,12 +20,12 @@ class BroadcastListForm extends StatefulWidget {
 }
 
 class _BroadcastListFormState extends State<BroadcastListForm> {
-  late final TextEditingController _searchController;
+  late final SearchController _searchController;
 
   @override
   void initState() {
     super.initState();
-    _searchController = TextEditingController();
+    _searchController = SearchController();
   }
 
   @override
@@ -36,7 +35,7 @@ class _BroadcastListFormState extends State<BroadcastListForm> {
     return AppScaffold(
       title: LocaleKeys.broadcast_broadcastList.tr(),
       leading: Row(
-        children: [
+        children: <Widget>[
           const SizedBox(
             width: 10,
           ),
@@ -66,16 +65,52 @@ class _BroadcastListFormState extends State<BroadcastListForm> {
           icon: const Icon(Icons.add),
         ),
         const WidthSpacer(),
-        SizedBox(
-          width: 350,
-          child: AppTextField(
-            controller: _searchController
-              ..addListener(
-                () => cubit.setSearchString(
-                  _searchController.text,
-                ),
-              ),
-          ),
+        BlocBuilder<BroadcastListCubit, BroadcastListState>(
+          builder: (_, BroadcastListState state) {
+            return SearchAnchor(
+              searchController: _searchController,
+              builder: (_, SearchController controller) {
+                return SizedBox(
+                  width: 350,
+                  child: SearchBar(
+                    onTap: controller.openView,
+                    controller: controller,
+                    leading: IconButton(
+                      onPressed: () {
+                        _searchController.text = '';
+                        cubit.searchBroadcasts(_searchController.text);
+                      },
+                      icon: const Icon(Icons.close),
+                    ),
+                    trailing: <Widget>[
+                      IconButton(
+                        onPressed: () {
+                          cubit.searchBroadcasts(_searchController.text);
+                        },
+                        icon: const Icon(
+                          Icons.search,
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              },
+              suggestionsBuilder: (_, __) {
+                if (state is DataState) {
+                  return state.searchSuggestions.map(
+                    (String e) => ListTile(
+                      title: Text(e),
+                      onTap: () {
+                        _searchController.closeView(e);
+                        cubit.searchBroadcasts(_searchController.text);
+                      },
+                    ),
+                  );
+                }
+                return <Widget>[];
+              },
+            );
+          },
         ),
       ],
       floatingActionButton: FloatingActionButton(
@@ -90,9 +125,9 @@ class _BroadcastListFormState extends State<BroadcastListForm> {
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
                 ),
-                itemCount: state.filteredBroadcasts.length,
+                itemCount: state.currentBroadcasts.length,
                 itemBuilder: (BuildContext context, int index) {
-                  final BroadcastModelResponse broadcast = state.filteredBroadcasts[index];
+                  final BroadcastModelResponse broadcast = state.currentBroadcasts[index];
 
                   return BroadcastCard(
                     name: broadcast.name,

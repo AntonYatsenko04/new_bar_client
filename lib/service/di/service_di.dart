@@ -20,6 +20,8 @@ void initServiceDi(GetIt appLocator) {
     ..registerLazySingleton<BroadcastService>(
       () => BroadcastService(
         broadcastProvider: appLocator(),
+        sharedPreferencesProvider: appLocator(),
+        cookieProvider: appLocator(),
       ),
     )
     ..registerLazySingleton<BroadcastImageService>(

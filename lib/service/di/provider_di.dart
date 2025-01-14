@@ -1,8 +1,10 @@
 import 'package:bar_client/service/providers/auth_provider.dart';
 import 'package:bar_client/service/providers/broadcast_provider.dart';
+import 'package:bar_client/service/providers/cookie_provider.dart';
 import 'package:bar_client/service/providers/local_user_info_provider.dart';
 import 'package:bar_client/service/providers/menu_provider.dart';
 import 'package:bar_client/service/providers/order_provider.dart';
+import 'package:bar_client/service/providers/session_token_provider.dart';
 import 'package:bar_client/service/providers/shared_preferences_provider.dart';
 import 'package:bar_client/service/providers/table_provider.dart';
 import 'package:bar_client/service/providers/user_provider.dart';
@@ -15,9 +17,7 @@ import '../providers/broadcast_image_provider.dart';
 void initProviderDi(GetIt appLocator) {
   appLocator
     ..registerLazySingleton<SharedPreferencesProvider>(
-      () => SharedPreferencesProvider(
-        sharedPreferences: appLocator(),
-      ),
+      SessionTokenProvider.new,
     )
     ..registerLazySingleton<AuthProvider>(
       () => AuthProvider(
@@ -33,6 +33,9 @@ void initProviderDi(GetIt appLocator) {
       () => BroadcastImageProvider(
         appLocator<Dio>(),
       ),
+    )
+    ..registerLazySingleton<CookieProvider>(
+      CookieProvider.new,
     )
     ..registerLazySingleton<MenuProvider>(
       () => MenuProvider(

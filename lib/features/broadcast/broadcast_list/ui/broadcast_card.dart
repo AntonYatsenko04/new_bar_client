@@ -29,55 +29,57 @@ class BroadcastCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(name, style: AppTextStyles.s18W500H24Regular),
-                      const HeightSpacer(),
-                      if (image case final Uint8List image)
-                        SizedBox(
-                          width: 200,
-                          child: Image.memory(image),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(name, style: AppTextStyles.s18W500H24Regular),
+                        const HeightSpacer(),
+                        if (image case final Uint8List image)
+                          SizedBox(
+                            width: 200,
+                            child: Image.memory(image),
+                          ),
+                        const HeightSpacer(),
+                        Text(
+                          DateFormatter.getDateTimeString(dateTime),
+                          style: AppTextStyles.s14W400H18Regular,
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                      const HeightSpacer(),
-                      Text(
-                        DateFormatter.getDateTimeString(dateTime),
-                        style: AppTextStyles.s14W400H18Regular,
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const HeightSpacer(),
-                      Text(description),
-                      const HeightSpacer(),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          IconButton(
-                            onPressed: deleteCallback,
-                            icon: const Icon(
-                              Icons.delete_forever,
+                        const HeightSpacer(),
+                        Text(description),
+                        const HeightSpacer(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            IconButton(
+                              onPressed: deleteCallback,
+                              icon: const Icon(
+                                Icons.delete_forever,
+                              ),
                             ),
-                          ),
-                          const WidthSpacer(),
-                          IconButton(
-                            onPressed: editCallback,
-                            icon: const Icon(
-                              Icons.edit,
+                            const WidthSpacer(),
+                            IconButton(
+                              onPressed: editCallback,
+                              icon: const Icon(
+                                Icons.edit,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

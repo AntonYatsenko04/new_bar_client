@@ -1,14 +1,26 @@
+import 'package:bar_client/core/src/logger/logger.dart';
+import 'package:bar_client/service/exceptions/app_exception.dart';
 import 'package:bar_client/service/models/broadcast/broadcast_model_request.dart';
 import 'package:bar_client/service/models/broadcast/broadcast_model_response.dart';
+import 'package:bar_client/service/models/broadcast/broadcast_search_result_cookie_model.dart';
 import 'package:bar_client/service/providers/broadcast_provider.dart';
+import 'package:bar_client/service/providers/shared_preferences_provider.dart';
 import 'package:bar_client/service/safe_request/safe_request.dart';
+
+import '../providers/cookie_provider.dart';
 
 class BroadcastService {
   final BroadcastProvider _broadcastProvider;
+  final SharedPreferencesProvider _sharedPreferencesProvider;
+  final CookieProvider _cookieProvider;
 
   BroadcastService({
     required BroadcastProvider broadcastProvider,
-  }) : _broadcastProvider = broadcastProvider;
+    required SharedPreferencesProvider sharedPreferencesProvider,
+    required CookieProvider cookieProvider,
+  })  : _broadcastProvider = broadcastProvider,
+        _sharedPreferencesProvider = sharedPreferencesProvider,
+        _cookieProvider = cookieProvider;
 
   Future<List<BroadcastModelResponse>> getBroadcasts() async {
     return safeRequest(_broadcastProvider.getBroadCasts);
@@ -37,5 +49,54 @@ class BroadcastService {
         broadcast.id,
       ),
     );
+  }
+
+  Future<void> addSearchRequest({required String searchRequest}) async {
+    try {
+      final String? token = _sharedPreferencesProvider.getToken();
+
+      if (token == null) {
+        return;
+      }
+      BroadcastSearchResultCookieModel? broadcastSearchResultCookieModel =
+          _cookieProvider.getSearchResults(token: token);
+
+      if (broadcastSearchResultCookieModel == null) {
+        broadcastSearchResultCookieModel =
+            BroadcastSearchResultCookieModel(token: token, searchResults: <String>[searchRequest]);
+      } else {
+        broadcastSearchResultCookieModel = broadcastSearchResultCookieModel.copyWith(
+            searchResults: broadcastSearchResultCookieModel.searchResults..add(searchRequest));
+      }
+      _cookieProvider.updateSearchResults(
+        broadcastSearchResultCookieModel: broadcastSearchResultCookieModel,
+      );
+    } on Exception catch (e) {
+      AppLogger().error(error: e);
+
+      throw AppException(type: AppExceptionType.clientError);
+    }
+  }
+
+  Future<List<String>> getSearchRequests() async {
+    try {
+      final String? token = _sharedPreferencesProvider.getToken();
+
+      AppLogger().debug('token is null: ${token == null}');
+
+      if (token == null) {
+        return <String>[];
+      }
+
+      final BroadcastSearchResultCookieModel? broadcastSearchResultCookieModel =
+          _cookieProvider.getSearchResults(token: token);
+      AppLogger().debug(broadcastSearchResultCookieModel);
+
+      return broadcastSearchResultCookieModel?.searchResults ?? <String>[];
+    } on Exception catch (e) {
+      AppLogger().error(error: e);
+
+      throw AppException(type: AppExceptionType.clientError);
+    }
   }
 }

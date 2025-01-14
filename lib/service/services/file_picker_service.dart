@@ -10,7 +10,14 @@ class FilePickerService {
       allowedExtensions: <String>['jpg', 'jpeg'],
     );
 
+    final int fileSize = result?.files.firstOrNull?.size ?? 0;
+
+    if (fileSize > 1073741824 || fileSize < 1) {
+      return null;
+    }
+
     final Uint8List? imageBytes = result?.files.firstOrNull?.bytes;
+
     if (imageBytes != null) {
       final bool isValid = await isValidJpeg(imageBytes);
 

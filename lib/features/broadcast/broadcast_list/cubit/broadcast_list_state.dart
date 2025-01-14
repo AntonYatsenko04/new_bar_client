@@ -10,22 +10,11 @@ class DataState with _$DataState implements BroadcastListState {
   const factory DataState({
     required List<BroadcastModelResponse> broadcasts,
     required List<BroadcastImageUiModel> broadcastImages,
-    String? searchString,
+    required List<String> searchSuggestions,
+    List<BroadcastModelResponse>? filteredBroadcasts,
   }) = _DataState;
 
-  List<BroadcastModelResponse> get filteredBroadcasts {
-    if (searchString == null) {
-      return broadcasts;
-    }
-
-    return broadcasts
-        .where(
-          (BroadcastModelResponse e) => e.name.trim().toLowerCase().contains(
-                searchString!.trim().toLowerCase(),
-              ),
-        )
-        .toList();
-  }
+  List<BroadcastModelResponse> get currentBroadcasts => filteredBroadcasts ?? broadcasts;
 
   Uint8List? getBroadcastImage(int id) {
     for (final BroadcastImageUiModel broadcastImage in broadcastImages) {

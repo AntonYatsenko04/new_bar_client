@@ -38,11 +38,13 @@ class BroadcastListCubit extends Cubit<BroadcastListState> {
       final List<BroadcastModelResponse> broadcasts = await _broadcastService.getBroadcasts();
       final List<BroadcastImageUiModel> broadcastImages =
           await _broadcastImageService.getBroadcastImages();
+      final List<String> searchSuggestions = await _broadcastService.getSearchRequests();
 
       emit(
         DataState(
           broadcasts: broadcasts,
           broadcastImages: broadcastImages,
+          searchSuggestions: searchSuggestions,
         ),
       );
     } on AppException catch (e) {
@@ -60,24 +62,46 @@ class BroadcastListCubit extends Cubit<BroadcastListState> {
     }
   }
 
-  void setSearchString(String? searchString) {
+  Future<void> searchBroadcasts(String? searchString) async {
     final BroadcastListState currentState = state;
     if (currentState is! DataState) {
       return;
     }
 
+    final List<BroadcastModelResponse> broadcasts;
+
+    if (searchString == null || searchString.isEmpty) {
+      broadcasts = currentState.broadcasts;
+    } else {
+      broadcasts = currentState.broadcasts
+          .where(
+            (BroadcastModelResponse e) => e.name.trim().toLowerCase().contains(
+                  searchString.trim().toLowerCase(),
+                ),
+          )
+          .toList();
+      try {
+        await _broadcastService.addSearchRequest(searchRequest: searchString);
+      } on AppException catch (e) {
+        emit(ErrorState(errorMessage: e.errorMessageKey));
+        return;
+      }
+    }
+    final List<String> searchSuggestions;
+
+    try {
+      searchSuggestions = await _broadcastService.getSearchRequests();
+    } on AppException catch (e) {
+      emit(ErrorState(errorMessage: e.errorMessageKey));
+      return;
+    }
+
     emit(
       currentState.copyWith(
-        searchString: searchString,
+        searchSuggestions: searchSuggestions,
+        filteredBroadcasts: broadcasts,
       ),
     );
-  }
-
-  Future<void> updateSearch(String? input) async {
-    final BroadcastListState currentState = state;
-    if (currentState is DataState) {
-      emit(currentState.copyWith(searchString: null));
-    }
   }
 
   Future<void> logout() async {
