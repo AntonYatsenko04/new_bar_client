@@ -23,12 +23,8 @@ class AuthService {
         _sharedPreferencesProvider = sharedPreferencesProvider;
 
   Future<void> signIn({required SignInModel signInModel}) async {
-    final TokenModel token =
-        await safeRequest<TokenModel>(() => _authProvider.signIn(signInModel));
+    final TokenModel token = await safeRequest<TokenModel>(() => _authProvider.signIn(signInModel));
     await _sharedPreferencesProvider.saveToken(token.token);
-    // final UserModel userModel = await safeRequest(getCurrentUserInfo);
-    // _currentUserId = userModel.id;
-    // _currentUserType = userModel.userType;
   }
 
   Future<void> signUp({required SignUpModel signUpModel}) async {

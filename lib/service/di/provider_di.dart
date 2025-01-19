@@ -1,6 +1,7 @@
 import 'package:bar_client/service/providers/auth_provider.dart';
 import 'package:bar_client/service/providers/broadcast_provider.dart';
 import 'package:bar_client/service/providers/cookie_provider.dart';
+import 'package:bar_client/service/providers/library_provider.dart';
 import 'package:bar_client/service/providers/local_user_info_provider.dart';
 import 'package:bar_client/service/providers/menu_provider.dart';
 import 'package:bar_client/service/providers/order_provider.dart';
@@ -36,6 +37,11 @@ void initProviderDi(GetIt appLocator) {
     )
     ..registerLazySingleton<CookieProvider>(
       CookieProvider.new,
+    )
+    ..registerLazySingleton<LibraryProvider>(
+      () => LibraryProvider(
+        appLocator<Dio>(),
+      ),
     )
     ..registerLazySingleton<MenuProvider>(
       () => MenuProvider(

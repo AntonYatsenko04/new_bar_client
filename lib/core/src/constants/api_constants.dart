@@ -1,6 +1,10 @@
 class ApiConstants {
   static const String baseUrl = 'http://127.0.0.1:8000/api';
 
+  static const String xamppBaseUrl = 'http://127.0.0.1:7777';
+  static const String xamppDbLibrary = '/lab7profile/FullDbApi.php';
+  static const String xamppCodeLibrary = '/lab7profile/FlatNotEffectiveCodeApi.php';
+
   static const String signIn = '/sign_in';
   static const String signUp = '/sign_up';
   static const String signUpWithRole = '/sign_up_with_role';

@@ -2,7 +2,7 @@
   "commonErrors": {
     "noInternet": "Отсутствует подключение к серверу.",
     "userWithThisEmailAlreadyExists": "Пользователь с такой почтой уже существует.",
-    "serverUnavailable": "Сервер недоступен",
+    "serverUnavailable": "Ошибка на сервере",
     "unknown": "Неизвестная ошибка",
     "clientError": "Ошибка на клиенте",
     "unAuthorized": "Не достаточно прав доступа",
@@ -88,5 +88,13 @@
     "menuQuantityInOrders": "Количество блюд в заказах",
     "orderWithThisMenuQuantity": "Количество заказов с таким блюдом",
     "menuPricePercentInOrders": "Процент, который цена этих блюд в заказе составляет от цены заказов"
+  },
+  "library": {
+    "library": "Библиотека бара",
+    "getDbLibrary": "Получить с соединением данных на уровне базы",
+    "getCodeLibrary": "Получить с соединением данных на уровне кода",
+    "timeToProcess": "Время обработки",
+    "requiredMemory": "Необходимая память",
+    "booksCount": "Количество книг"
   }
 }

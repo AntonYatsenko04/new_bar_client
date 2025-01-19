@@ -20,7 +20,7 @@ class DioConfig {
     required AppConfig appConfig,
   }) : _appConfig = appConfig {
     _dio
-      ..options.receiveTimeout = const Duration(seconds: 3)
+      ..options.receiveTimeout = const Duration(seconds: 10)
       //..options.extra['withCredentials'] = true
       ..options.baseUrl = _appConfig.baseUrl
       // ..options.receiveDataWhenStatusError = true

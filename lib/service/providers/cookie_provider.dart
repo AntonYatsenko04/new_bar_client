@@ -19,14 +19,14 @@ class CookieProvider {
     required BroadcastSearchResultCookieModel broadcastSearchResultCookieModel,
   }) {
     _saveCookie(
-      name: _cookieName,
+      name: _cookieName + broadcastSearchResultCookieModel.token,
       value: jsonEncode(broadcastSearchResultCookieModel.toJson()),
     );
   }
 
   BroadcastSearchResultCookieModel? getSearchResults({required String token}) {
     try {
-      final String? source = _getCookie(_cookieName);
+      final String? source = _getCookie(_cookieName + token);
       if (source == null) return null;
 
       final BroadcastSearchResultCookieModel broadcastSearchResultCookieModel =
@@ -35,10 +35,10 @@ class CookieProvider {
       if (broadcastSearchResultCookieModel.token == token) {
         return broadcastSearchResultCookieModel;
       }
-      _clearCookies();
+      // _clearCookies();
       return null;
     } on Exception catch (e) {
-      _clearCookies();
+      // _clearCookies();
 
       return null;
     }
@@ -71,7 +71,7 @@ class CookieProvider {
     final List<String> cookies = html.document.cookie?.split('; ') ?? <String>[];
     for (final String cookie in cookies) {
       final List<String> parts = cookie.split('=');
-      if (parts[0] == name) {
+      if (parts[0].contains(name)) {
         final String encryptedValue = parts[1];
         final String decodedValue = Uri.decodeComponent(encryptedValue);
 
@@ -82,7 +82,7 @@ class CookieProvider {
           return decryptedValue;
         } catch (e, st) {
           AppLogger().error(error: e, stackTrace: st);
-          _clearCookies();
+          // _clearCookies();
           return null;
         }
       }

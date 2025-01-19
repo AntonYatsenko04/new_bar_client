@@ -40,6 +40,10 @@ class AppRouter extends RootStackRouter {
               path: 'weights',
               page: WeightsRoute.page,
             ),
+            AutoRoute(
+              path: 'library',
+              page: LibraryRoute.page,
+            ),
           ],
         ),
         AutoRoute(

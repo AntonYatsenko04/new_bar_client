@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:bar_client/core/src/logger/logger.dart';
 import 'package:bar_client/service/exceptions/app_exception.dart';
 import 'package:dio/dio.dart';
 
@@ -27,7 +28,7 @@ Future<T> safeRequest<T>(Future<T> Function() request) async {
       throw AppException(type: AppExceptionType.unknown);
     }
   } catch (error, stackTrace) {
-    log(error.toString(), stackTrace: stackTrace);
+    AppLogger().error(error: error.toString(), stackTrace: stackTrace);
     throw Exception(error.toString());
   }
 }

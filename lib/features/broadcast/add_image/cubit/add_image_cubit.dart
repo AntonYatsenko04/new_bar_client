@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:bar_client/core/src/logger/logger.dart';
 import 'package:bar_client/navigation/app_router/app_router.dart';
 import 'package:bar_client/service/models/broadcast/broadcast_model_response.dart';
 import 'package:bar_client/service/services/broadcast_image_service.dart';
@@ -55,10 +56,11 @@ class AddImageCubit extends Cubit<AddImageState> {
         ),
       );
       currentState = state as DataState;
-      final Uint8List? imageBytes = await _filePickerService.pickImage();
-      if (imageBytes != null) {
+      try {
+        final Uint8List? imageBytes = await _filePickerService.pickImage();
         emit(currentState.copyWith(imageBytes: imageBytes));
-      } else {
+      } on Exception catch (e, st) {
+        AppLogger().error(error: e, stackTrace: st);
         emit(currentState.copyWith(commonError: LocaleKeys.broadcast_pleasePickAValidImage));
       }
     }
@@ -91,11 +93,13 @@ class AddImageCubit extends Cubit<AddImageState> {
       } on AppException catch (e) {
         emit(currentState.copyWith(commonError: e.errorMessageKey));
       } finally {
-        emit(
-          currentState.copyWith(
-            blockSendImageButton: false,
-          ),
-        );
+        if (state case final DataState state) {
+          emit(
+            state.copyWith(
+              blockSendImageButton: false,
+            ),
+          );
+        }
       }
     }
   }
