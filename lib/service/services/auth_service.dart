@@ -34,4 +34,9 @@ class AuthService {
   Future<void> signOut() {
     return _sharedPreferencesProvider.clearToken();
   }
+
+  Future<void> fakeSignIn({required SignInModel signInModel}) async {
+    final TokenModel token = await safeRequest<TokenModel>(() => _authProvider.signIn(signInModel));
+    await _sharedPreferencesProvider.saveToken(token.token);
+  }
 }

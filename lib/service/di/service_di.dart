@@ -1,6 +1,7 @@
 import 'package:bar_client/service/services/auth_service.dart';
 import 'package:bar_client/service/services/broadcast_image_service.dart';
 import 'package:bar_client/service/services/broadcast_service.dart';
+import 'package:bar_client/service/services/csrf_token_service.dart';
 import 'package:bar_client/service/services/file_picker_service.dart';
 import 'package:bar_client/service/services/library_service.dart';
 import 'package:bar_client/service/services/menu_service.dart';
@@ -23,12 +24,21 @@ void initServiceDi(GetIt appLocator) {
         broadcastProvider: appLocator(),
         sharedPreferencesProvider: appLocator(),
         cookieProvider: appLocator(),
+        badBroadcastProvider: appLocator(),
       ),
     )
     ..registerLazySingleton<BroadcastImageService>(
       () => BroadcastImageService(
         broadcastImageProvider: appLocator(),
         filePickerService: appLocator(),
+      ),
+    )
+    ..registerLazySingleton<CsrfTokenService>(
+      () => CsrfTokenService(
+        csrfTokenApiProvider: appLocator(),
+        csrfTokenLocalProvider: appLocator(),
+        encryptionProvider: appLocator(),
+        libraryProvider: appLocator(),
       ),
     )
     ..registerLazySingleton<FilePickerService>(

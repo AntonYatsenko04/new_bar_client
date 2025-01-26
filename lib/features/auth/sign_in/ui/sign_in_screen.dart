@@ -16,6 +16,7 @@ class SignInScreen extends StatelessWidget {
         authService: appLocator(),
         appRouter: appLocator(),
         userService: appLocator(),
+        csrfTokenService: appLocator(),
       ),
       child: const SignInForm(),
     );

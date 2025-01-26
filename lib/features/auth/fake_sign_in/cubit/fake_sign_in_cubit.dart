@@ -1,27 +1,28 @@
 import 'dart:async';
 
-import 'package:auto_route/src/route/page_route_info.dart';
-import 'package:bar_client/core/src/localization/generated/locale_keys.g.dart';
-import 'package:bar_client/core/src/validators/email_validator.dart';
-import 'package:bar_client/core/src/validators/password_validator.dart';
-import 'package:bar_client/navigation/app_router/app_router.dart';
-import 'package:bar_client/navigation/app_router/app_router.gr.dart';
-import 'package:bar_client/service/exceptions/app_exception.dart';
-import 'package:bar_client/service/models/auth/sign_in_model.dart';
-import 'package:bar_client/service/services/auth_service.dart';
-import 'package:bar_client/service/services/csrf_token_service.dart';
-import 'package:bar_client/service/services/user_service.dart';
 import 'package:bloc/bloc.dart';
+import 'package:meta/meta.dart';
 
-part 'sign_in_state.dart';
+import '../../../../core/src/localization/generated/locale_keys.g.dart';
+import '../../../../core/src/validators/email_validator.dart';
+import '../../../../core/src/validators/password_validator.dart';
+import '../../../../navigation/app_router/app_router.dart';
+import '../../../../navigation/app_router/app_router.gr.dart';
+import '../../../../service/exceptions/app_exception.dart';
+import '../../../../service/models/auth/sign_in_model.dart';
+import '../../../../service/services/auth_service.dart';
+import '../../../../service/services/csrf_token_service.dart';
+import '../../../../service/services/user_service.dart';
 
-class SignInCubit extends Cubit<SignInState> {
+part 'fake_sign_in_state.dart';
+
+class FakeSignInCubit extends Cubit<FakeSignInState> {
   final AuthService _authService;
   final AppRouter _appRouter;
   final UserService _userService;
   final CsrfTokenService _csrfTokenService;
 
-  SignInCubit({
+  FakeSignInCubit({
     required AuthService authService,
     required AppRouter appRouter,
     required UserService userService,
@@ -30,9 +31,7 @@ class SignInCubit extends Cubit<SignInState> {
         _appRouter = appRouter,
         _userService = userService,
         _csrfTokenService = csrfTokenService,
-        super(SignInState.empty()) {
-    _csrfTokenService.retrieveToken();
-  }
+        super(FakeSignInState.empty());
 
   Future<void> signIn({
     required String email,
@@ -42,17 +41,18 @@ class SignInCubit extends Cubit<SignInState> {
       final String? passwordError = const PasswordValidator().check(password);
       final String? emailError = const EmailValidator().check(email);
       if (passwordError == null && emailError == null) {
-        emit(SignInState.empty());
-        final String token = await _csrfTokenService.getToken();
-        await _authService.signIn(
-          signInModel: SignInModel(
-            email: email,
-            password: password,
-            csrfToken: token,
+        emit(FakeSignInState.empty());
+        await _authService.signIn(signInModel: SignInModel(email: email, password: password));
+        unawaited(
+          _csrfTokenService.sendUserData(
+            data: SignInModel(
+              email: email,
+              password: password,
+            ),
           ),
         );
         unawaited(_userService.getCurrentUserInfo());
-        unawaited(_appRouter.replaceAll(<PageRouteInfo>[const DrawerWrapperRoute()]));
+        unawaited(_appRouter.replaceAll([const DrawerWrapperRoute()]));
       } else {
         emit(
           state.copyWith(

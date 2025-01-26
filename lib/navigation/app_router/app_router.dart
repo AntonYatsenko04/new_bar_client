@@ -13,6 +13,10 @@ class AppRouter extends RootStackRouter {
           page: SignInRoute.page,
         ),
         AutoRoute(
+          path: '/fake_sign_in',
+          page: FakeSignInRoute.page,
+        ),
+        AutoRoute(
           path: '/sign_up',
           page: SignUpRoute.page,
         ),

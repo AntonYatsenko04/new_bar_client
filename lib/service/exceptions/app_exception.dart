@@ -10,6 +10,7 @@ class AppException implements Exception {
 
 const int _clientError = 400;
 const int _unAuthError = 401;
+const int _forbidden = 403;
 
 const int _notFoundError = 404;
 const int _resourceExists = 409;
@@ -30,6 +31,10 @@ enum AppExceptionType {
   unAuthorized(
     errorMessageKey: LocaleKeys.commonErrors_unAuthorized,
     errorCode: _unAuthError,
+  ),
+  forbidden(
+    errorMessageKey: LocaleKeys.commonErrors_forbidden,
+    errorCode: _forbidden,
   ),
   notFound(
     errorMessageKey: LocaleKeys.commonErrors_notFound,

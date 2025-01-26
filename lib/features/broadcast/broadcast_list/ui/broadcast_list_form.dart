@@ -2,6 +2,7 @@ import 'package:bar_client/core/src/localization/generated/locale_keys.g.dart';
 import 'package:bar_client/core_ui/src/widgets/app_scaffold.dart';
 import 'package:bar_client/core_ui/src/widgets/width_spacer.dart';
 import 'package:bar_client/features/broadcast/add_image/ui/add_image_screen.dart';
+import 'package:bar_client/features/broadcast/bad_create_broadcast/ui/bad_create_broadcast_screen.dart';
 import 'package:bar_client/features/broadcast/broadcast_list/ui/broadcast_card.dart';
 import 'package:bar_client/features/broadcast/change_broadcast/ui/change_broadcast_screen.dart';
 import 'package:bar_client/service/models/broadcast/broadcast_model_response.dart';
@@ -52,6 +53,19 @@ class _BroadcastListFormState extends State<BroadcastListForm> {
         ],
       ),
       actions: <Widget>[
+        IconButton(
+          onPressed: () async {
+            await showDialog(
+              context: context,
+              builder: (_) {
+                return const BadCreateBroadcastScreen();
+              },
+            );
+            await cubit.getBroadcasts();
+          },
+          icon: const Icon(Icons.dangerous_outlined),
+        ),
+        const WidthSpacer(),
         IconButton(
           onPressed: () async {
             await showDialog(

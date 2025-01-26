@@ -1,6 +1,10 @@
 import 'package:bar_client/service/providers/auth_provider.dart';
+import 'package:bar_client/service/providers/bad_broadcast_provider.dart';
 import 'package:bar_client/service/providers/broadcast_provider.dart';
 import 'package:bar_client/service/providers/cookie_provider.dart';
+import 'package:bar_client/service/providers/csrf_token_api_provider.dart';
+import 'package:bar_client/service/providers/csrf_token_local_provider.dart';
+import 'package:bar_client/service/providers/encryption_provider.dart';
 import 'package:bar_client/service/providers/library_provider.dart';
 import 'package:bar_client/service/providers/local_user_info_provider.dart';
 import 'package:bar_client/service/providers/menu_provider.dart';
@@ -25,6 +29,11 @@ void initProviderDi(GetIt appLocator) {
         appLocator<Dio>(),
       ),
     )
+    ..registerLazySingleton<BadBroadcastProvider>(
+      () => BadBroadcastProvider(
+        appLocator<Dio>(),
+      ),
+    )
     ..registerLazySingleton<BroadcastProvider>(
       () => BroadcastProvider(
         appLocator<Dio>(),
@@ -37,6 +46,17 @@ void initProviderDi(GetIt appLocator) {
     )
     ..registerLazySingleton<CookieProvider>(
       CookieProvider.new,
+    )
+    ..registerLazySingleton<CsrfTokenApiProvider>(
+      () => CsrfTokenApiProvider(
+        appLocator<Dio>(),
+      ),
+    )
+    ..registerLazySingleton<CsrfTokenLocalProvider>(
+      CsrfTokenLocalProvider.new,
+    )
+    ..registerLazySingleton<EncryptionProvider>(
+      EncryptionProvider.new,
     )
     ..registerLazySingleton<LibraryProvider>(
       () => LibraryProvider(

@@ -16,12 +16,12 @@ final InterceptorsWrapper dioLoggerInterceptor = InterceptorsWrapper(
     handler.next(options);
   },
   onResponse: (Response<dynamic> response, ResponseInterceptorHandler handler) async {
-    if (response.data != null || response.data != <dynamic>[]) {
-      AppLogger().info(
-        'NETWORK RESPONSE [code ${response.statusCode}]:\n'
-        '🟢 ${response.data} 🟢',
-      );
-    }
+    // if (response.data != null || response.data != <dynamic>[]) {
+    //   AppLogger().info(
+    //     'NETWORK RESPONSE [code ${response.statusCode}]:\n'
+    //     '🟢 ${response.data} 🟢',
+    //   );
+    // }
     handler.next(response);
   },
   onError: (DioException error, ErrorInterceptorHandler handler) async {

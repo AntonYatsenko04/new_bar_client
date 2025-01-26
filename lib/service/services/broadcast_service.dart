@@ -3,6 +3,7 @@ import 'package:bar_client/service/exceptions/app_exception.dart';
 import 'package:bar_client/service/models/broadcast/broadcast_model_request.dart';
 import 'package:bar_client/service/models/broadcast/broadcast_model_response.dart';
 import 'package:bar_client/service/models/broadcast/broadcast_search_result_cookie_model.dart';
+import 'package:bar_client/service/providers/bad_broadcast_provider.dart';
 import 'package:bar_client/service/providers/broadcast_provider.dart';
 import 'package:bar_client/service/providers/shared_preferences_provider.dart';
 import 'package:bar_client/service/safe_request/safe_request.dart';
@@ -13,14 +14,17 @@ class BroadcastService {
   final BroadcastProvider _broadcastProvider;
   final SharedPreferencesProvider _sharedPreferencesProvider;
   final CookieProvider _cookieProvider;
+  final BadBroadcastProvider _badBroadcastProvider;
 
   BroadcastService({
     required BroadcastProvider broadcastProvider,
     required SharedPreferencesProvider sharedPreferencesProvider,
     required CookieProvider cookieProvider,
+    required BadBroadcastProvider badBroadcastProvider,
   })  : _broadcastProvider = broadcastProvider,
         _sharedPreferencesProvider = sharedPreferencesProvider,
-        _cookieProvider = cookieProvider;
+        _cookieProvider = cookieProvider,
+        _badBroadcastProvider = badBroadcastProvider;
 
   Future<List<BroadcastModelResponse>> getBroadcasts() async {
     return safeRequest(_broadcastProvider.getBroadCasts);
@@ -98,5 +102,11 @@ class BroadcastService {
 
       throw AppException(type: AppExceptionType.clientError);
     }
+  }
+
+  Future<void> badCreateBroadcast({
+    required BroadcastModelRequest broadcast,
+  }) async {
+    await safeRequest(() => _badBroadcastProvider.createBroadcast(broadcast));
   }
 }
